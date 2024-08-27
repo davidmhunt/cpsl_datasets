@@ -111,14 +111,15 @@ class CpslDS:
 
         return
     
-    def get_radar_detections(self,idx:int)->np.ndarray:
-        """Get radar detections for a specific index in the dataset
+    def get_radar_data(self,idx:int)->np.ndarray:
+        """Get radar detections or ADC data cube for a specific index in the dataset
 
         Args:
             idx (int): The index of the radar data detection
 
         Returns:
-            np.ndarray: An Nx4 of radar detections with (x,y,z,vel) vals
+            np.ndarray: An Nx4 of radar detections with (x,y,z,vel) vals or 
+                        (rx_channels) x (samples) x (chirps) ADC cube for a given frame
         """
 
         assert self.radar_enabled, "No radar dataset loaded"
@@ -131,24 +132,6 @@ class CpslDS:
         points = np.load(path)
                 
         return points
-    
-    def remove_radar_ground_detections(self,point_cloud:np.ndarray)->np.ndarray:
-        """Removes specific detection where the sensor has the ground
-        and not an object in the environment
-
-        Args:
-            point_cloud (np.ndarray): numpy array containing the current list of detections
-
-        Returns:
-            np.ndarray: current detection list without the points where
-            the sensor detected the ground
-        """
-
-        ground_detection_radius = 1.5
-        distances = np.linalg.norm(point_cloud[:,0:3],axis=1)
-        ground_detection_idxs = (distances < ground_detection_radius) & (point_cloud[:,2] < -0.1)
-
-        return point_cloud[~ground_detection_idxs,:]
     
     ####################################################################
     #handling lidar data
