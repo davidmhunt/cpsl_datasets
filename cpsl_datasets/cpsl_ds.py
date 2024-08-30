@@ -170,6 +170,23 @@ class CpslDS:
         points = points[valid_points,:2]
 
         return points
+    
+    def get_lidar_point_cloud_raw(self,idx)->np.ndarray:
+        path = os.path.join(
+            self.dataset_path,
+            self.lidar_folder,
+            self.lidar_files[idx]
+        )
+        """Get a lidar pointcloud from the desired frame,
+        without filtering anything out
+
+        Returns:
+            np.ndarray: a Nx3 array of lidar detections
+        """
+        assert self.lidar_enabled, "No lidar dataset loaded"
+        points = np.load(path)
+
+        return points
         
     ####################################################################
     #handling camera data
