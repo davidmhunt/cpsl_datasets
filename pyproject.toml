@@ -8,10 +8,10 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.10"
-numpy = "^1.26.3"
+numpy = "~1.25"
 matplotlib = "^3.8.2"
 imageio = {extras = ["ffmpeg"], version = "^2.33.1"}
-opencv-python = "^4.9.0.80"
+opencv-python = ">4.7, <4.9.0.80"
 
 [tool.poetry.group.dev.dependencies]
 
