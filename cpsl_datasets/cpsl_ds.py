@@ -14,9 +14,7 @@ class CpslDS:
                  vehicle_vel_folder="vehicle_vel"
                  ) -> None:
         
-        #dataset folder path
-        self.dataset_path = dataset_path
-        
+      
         #radar data
         self.radar_enabled = False
         self.radar_folder = radar_folder
@@ -50,11 +48,16 @@ class CpslDS:
         #variable to keep track of the number of frames
         self.num_frames = 0
 
-        self.import_dataset_files()
-        self.determine_num_frames()
+        #load the new dataset
+        self.load_new_dataset(dataset_path)
 
         return
 
+    def load_new_dataset(self,dataset_path:str):
+
+        self.dataset_path = dataset_path
+        self.import_dataset_files()
+        self.determine_num_frames()
 
     def import_dataset_files(self):
 
