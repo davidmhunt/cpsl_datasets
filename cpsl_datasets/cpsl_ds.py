@@ -287,7 +287,14 @@ class CpslDS:
         return
     
     def get_imu_full_data(self,idx=0):
+        """_summary_
 
+        Args:
+            idx (int, optional): _description_. Defaults to 0.
+
+        Returns:
+            np.ndarray: [time,w_x,w_y,w_z,acc_x,acc_y,acc_z]
+        """
         assert self.imu_full_enabled, "No IMU Full dataset loaded"
 
         #load the data sample
