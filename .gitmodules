@@ -1,0 +1,3 @@
+[submodule "submodules/geometries"]
+	path = submodules/geometries
+	url = https://github.com/davidmhunt/geometries
