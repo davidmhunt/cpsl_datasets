@@ -282,6 +282,8 @@ class AthenaUAVDS:
         from the given state data
         """
 
+        assert self.depth_data.shape[0] > 0 and self.state_data.shape[0] > 0
+
         self.valid_data_idxs = np.where(
             (self.depth_time_stamps > self.state_time_stamps[0]) & 
             (self.depth_time_stamps < self.state_time_stamps[-1])
