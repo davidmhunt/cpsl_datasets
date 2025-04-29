@@ -11,7 +11,9 @@ class CpslDS:
                  camera_folder="camera",
                  imu_orientation_folder="imu_data",
                  imu_full_folder="imu_full",
-                 vehicle_vel_folder="vehicle_vel"
+                 vehicle_vel_folder="vehicle_vel",
+                 vehicle_odom_folder="vehicle_odom"
+
                  ) -> None:
         
       
@@ -45,6 +47,11 @@ class CpslDS:
         self.vehicle_vel_files = []
         self.vehicle_vel_enabled = False
 
+        #vehicle odometry data
+        self.vehicle_odom_folder = vehicle_odom_folder
+        self.vehicle_odom_files = []
+        self.vehicle_odom_enabled = False
+
         #variable to keep track of the number of frames
         self.num_frames = 0
 
@@ -67,6 +74,7 @@ class CpslDS:
         self.import_imu_orientation_data()
         self.import_imu_full_data()  
         self.import_vehicle_vel_data()
+        self.import_vehicle_odom_data()
             
     def determine_num_frames(self):
 
@@ -333,5 +341,33 @@ class CpslDS:
             self.dataset_path,
             self.vehicle_vel_folder,
             self.vehicle_vel_files[idx])
+
+        return np.load(path)
+    
+    ####################################################################
+    #handling vehicle odometry data
+    ####################################################################
+    def import_vehicle_odom_data(self):
+
+        path = os.path.join(self.dataset_path,self.vehicle_odom_folder)
+
+        if os.path.isdir(path):
+            self.vehicle_odom_enabled = True
+            self.vehicle_odom_files = sorted(os.listdir(path))
+            print("found {} vehicle odometry samples".format(len(self.vehicle_odom_files)))
+        else:
+            print("did not find vehicle odometry samples")
+
+        return
+    
+    def get_vehicle_odom_data(self,idx=0):
+
+        assert self.vehicle_odom_enabled, "No Vehicle odometry dataset loaded"
+
+        #load the data sample
+        path = os.path.join(
+            self.dataset_path,
+            self.vehicle_odom_folder,
+            self.vehicle_odom_files[idx])
 
         return np.load(path)
