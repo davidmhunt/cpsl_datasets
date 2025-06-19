@@ -234,7 +234,8 @@ class CpslDS:
         image = img.imread(path)
 
         #return while also flipping red and blue channel
-        return image[:,:,::-1]
+        # return image[:,:,::-1]
+        return image
     
     ####################################################################
     #handling imu data (orientation only)
