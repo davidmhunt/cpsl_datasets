@@ -362,6 +362,14 @@ class CpslDS:
         return
     
     def get_vehicle_odom_data(self,idx=0):
+        """Returns  [time,x,y,z,quat_w,quat_x,quat_y,quat_z,vx,vy,vz,wx,wy,wz]
+
+        Args:
+            idx (int, optional): _description_. Defaults to 0.
+
+        Returns:
+            _type_: _description_
+        """
 
         assert self.vehicle_odom_enabled, "No Vehicle odometry dataset loaded"
 
