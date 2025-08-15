@@ -9,6 +9,7 @@ class CpslDS:
                  radar_folder="radar_0",
                  lidar_folder="lidar",
                  camera_folder="camera",
+                 hand_tracking_folder="hand_tracking",
                  imu_orientation_folder="imu_data",
                  imu_full_folder="imu_full",
                  vehicle_vel_folder="vehicle_vel",
@@ -31,6 +32,11 @@ class CpslDS:
         self.camera_enabled = False
         self.camera_folder = camera_folder
         self.camera_files = []
+
+        #hand tracking data
+        self.hand_tracking_enabled = False
+        self.hand_tracking_folder = hand_tracking_folder
+        self.hand_tracking_files = []
 
         #imu data - orientation only
         self.imu_orientation_folder = imu_orientation_folder
@@ -71,6 +77,7 @@ class CpslDS:
         self.import_radar_data()
         self.import_lidar_data()
         self.import_camera_data()
+        self.import_hand_tracking_data()
         self.import_imu_orientation_data()
         self.import_imu_full_data()  
         self.import_vehicle_vel_data()
@@ -237,6 +244,43 @@ class CpslDS:
         # return image[:,:,::-1]
         return image
     
+    ####################################################################
+    #handling hand tracking data
+    ####################################################################   
+    def import_hand_tracking_data(self):
+
+        path = os.path.join(self.dataset_path,self.hand_tracking_folder)
+
+        if os.path.isdir(path):
+            self.hand_tracking_enabled = True
+            self.hand_tracking_files = sorted(os.listdir(path))
+            print("found {} hand tracking samples".format(len(self.hand_tracking_files)))
+        else:
+            print("did not find hand tracking samples")
+
+        return
+
+    def get_hand_tracking_data(self,idx:int)->np.ndarray:
+        """Get hand tracking data from the dataset
+
+        Args:
+            idx (int): the index in the dataset to get the hand tracking
+                data from
+
+        Returns:
+            np.ndarray: the hand tracking data
+        """
+        assert self.hand_tracking_enabled, "No hand tracking dataset loaded"
+
+        path = os.path.join(
+            self.dataset_path,
+            self.hand_tracking_folder,
+            self.hand_tracking_files[idx]
+        )
+        data = np.load(path)
+
+        return data
+
     ####################################################################
     #handling imu data (orientation only)
     ####################################################################   
