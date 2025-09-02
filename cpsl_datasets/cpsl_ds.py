@@ -168,18 +168,20 @@ class CpslDS:
         return
     
     def get_lidar_point_cloud(self,idx)->np.ndarray:
+        """Get a lidar pointcloud from the desired frame,
+        filters out ground and higher detections points
+
+        Returns:
+            np.ndarray: a Nx2 array of lidar detections (x,y)
+        """
+        assert self.lidar_enabled, "No lidar dataset loaded"
+
         path = os.path.join(
             self.dataset_path,
             self.lidar_folder,
             self.lidar_files[idx]
         )
-        """Get a lidar pointcloud from the desired frame,
-        filters out ground and higher detections points
-
-        Returns:
-            np.ndarray: a Nx2 array of lidar detections
-        """
-        assert self.lidar_enabled, "No lidar dataset loaded"
+        
         points = np.load(path)
 
         valid_points = points[:,2] > -0.2 #filter out ground
@@ -190,18 +192,22 @@ class CpslDS:
         return points
     
     def get_lidar_point_cloud_raw(self,idx)->np.ndarray:
+        """Get a lidar pointcloud from the desired frame,
+        without filtering anything out
+
+        Returns:
+            np.ndarray: a Nx4 array of lidar detections (x,y,z,intensity)
+        """
+
+        assert self.lidar_enabled, "No lidar dataset loaded"
+        
         path = os.path.join(
             self.dataset_path,
             self.lidar_folder,
             self.lidar_files[idx]
         )
-        """Get a lidar pointcloud from the desired frame,
-        without filtering anything out
-
-        Returns:
-            np.ndarray: a Nx3 array of lidar detections
-        """
-        assert self.lidar_enabled, "No lidar dataset loaded"
+        
+        
         points = np.load(path)
 
         return points
