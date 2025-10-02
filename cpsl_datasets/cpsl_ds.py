@@ -38,6 +38,13 @@ class CpslDS:
         self.hand_tracking_folder = hand_tracking_folder
         self.hand_tracking_files = []
 
+        #leap motion image data
+        self.leap_motion_images_enabled = False
+        self.leap_motion_image_left_folder = "leap_images/left"
+        self.leap_motion_image_right_folder = "leap_images/right"
+        self.leap_motion_image_left_files = []
+        self.leap_motion_image_right_files = []
+
         #imu data - orientation only
         self.imu_orientation_folder = imu_orientation_folder
         self.imu_orientation_files = []
@@ -78,6 +85,7 @@ class CpslDS:
         self.import_lidar_data()
         self.import_camera_data()
         self.import_hand_tracking_data()
+        self.import_leap_motion_image_data()
         self.import_imu_orientation_data()
         self.import_imu_full_data()  
         self.import_vehicle_vel_data()
@@ -93,6 +101,10 @@ class CpslDS:
             self.set_num_frames(len(self.lidar_files))
         if self.camera_enabled:
             self.set_num_frames(len(self.camera_files))
+        if self.hand_tracking_enabled:
+            self.set_num_frames(len(self.hand_tracking_files))
+        if self.leap_motion_images_enabled:
+            self.set_num_frames(len(self.leap_motion_image_left_files))
         if self.imu_full_enabled:
             self.set_num_frames(len(self.imu_full_files))
         if self.imu_orientation_enabled:
@@ -286,6 +298,66 @@ class CpslDS:
         data = np.load(path)
 
         return data
+    
+    ####################################################################
+    #handling leap_motion data
+    ####################################################################   
+    def import_leap_motion_image_data(self):
+
+        #handle left images
+        path = os.path.join(self.dataset_path,self.leap_motion_image_left_folder)
+
+        if os.path.isdir(path):
+            self.leap_motion_images_enabled = True
+            self.leap_motion_image_left_files = sorted(os.listdir(path))
+            print("found {} leap motion left samples".format(len(self.leap_motion_image_left_files)))
+        else:
+            print("did not find leap motion left samples")
+        
+        #handle right images
+        path = os.path.join(self.dataset_path,self.leap_motion_image_right_folder)
+
+        if os.path.isdir(path):
+            self.leap_motion_images_enabled = True
+            self.leap_motion_image_right_files = sorted(os.listdir(path))
+            print("found {} leap motion right samples".format(len(self.leap_motion_image_right_files)))
+        else:
+            print("did not find leap motion right samples")
+
+        return
+
+    def get_leap_motion_image_frame_left(self,idx:int)->np.ndarray:
+        """Get a leap motion left camera frame from the dataset
+
+        Args:
+            idx (int): the index in the dataset to get the leap motion
+        """
+
+        assert self.leap_motion_images_enabled, "No leap motion dataset loaded"
+
+        path = os.path.join(
+            self.dataset_path,
+            self.leap_motion_image_left_folder,
+            self.leap_motion_image_left_files[idx])
+        image = img.imread(path)
+
+        return image
+    
+    def get_leap_motion_image_frame_right(self,idx:int)->np.ndarray:
+        """Get a leap motion right camera frame from the dataset
+
+        Args:
+            idx (int): the index in the dataset to get the leap motion
+        """
+        assert self.leap_motion_images_enabled, "No leap motion dataset loaded"
+
+        path = os.path.join(
+            self.dataset_path,
+            self.leap_motion_image_right_folder,
+            self.leap_motion_image_right_files[idx])
+        image = img.imread(path)
+
+        return image
 
     ####################################################################
     #handling imu data (orientation only)
