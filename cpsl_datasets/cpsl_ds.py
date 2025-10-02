@@ -10,6 +10,8 @@ class CpslDS:
                  lidar_folder="lidar",
                  camera_folder="camera",
                  hand_tracking_folder="hand_tracking",
+                 leap_motion_image_left_folder="leap_images/left",
+                 leap_motion_image_right_folder="leap_images/right",
                  imu_orientation_folder="imu_data",
                  imu_full_folder="imu_full",
                  vehicle_vel_folder="vehicle_vel",
@@ -40,8 +42,8 @@ class CpslDS:
 
         #leap motion image data
         self.leap_motion_images_enabled = False
-        self.leap_motion_image_left_folder = "leap_images/left"
-        self.leap_motion_image_right_folder = "leap_images/right"
+        self.leap_motion_image_left_folder = leap_motion_image_left_folder
+        self.leap_motion_image_right_folder = leap_motion_image_right_folder
         self.leap_motion_image_left_files = []
         self.leap_motion_image_right_files = []
 
